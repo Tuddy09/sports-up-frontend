@@ -10,13 +10,15 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
 
 ## Get started
 
-1. Install dependencies
+Deschideti un terminal si rulati:
+
+1. Install dependencies (doar odata)
 
    ```bash
    npm install
    ```
 
-2. Start the app
+2. Start the app (comanda asta se foloseste sa pornesti aplicatia)
 
    ```bash
     npx expo start
