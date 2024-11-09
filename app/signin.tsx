@@ -1,13 +1,15 @@
-import { Link } from 'expo-router';
-import React, { useState } from 'react';
+import { Link, router } from 'expo-router';
+import React, { useContext, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image, Dimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Logo from '@/components/Logo';
 import Background from '@/components/Background';
 import axios from 'axios';
 import baseApi from '@/constants/BaseApi';
+import { UserContext } from '@/hooks/contexts/userContext';
 
 export default function SignIn() {
+  const { setUser } = useContext(UserContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -33,8 +35,9 @@ export default function SignIn() {
       })
         .then(response => {
           console.log(response.data);
+          setUser(response.data);
           Alert.alert("Success", "Sign in successful!");
-          //TODO: Navigate to home screen and pass user data
+          router.push('/home');
         })
         .catch(error => {
           console.log(error);
