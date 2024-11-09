@@ -1,13 +1,15 @@
-import { Link } from 'expo-router';
-import React, { useState } from 'react';
+import { Link, router } from 'expo-router';
+import React, { useContext, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Dimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Logo from '@/components/Logo';
 import Background from '@/components/Background';
 import axios from 'axios';
 import baseApi from '@/constants/BaseApi';
+import { UserContext } from '@/hooks/contexts/userContext';
 
 export default function Register() {
+    const { setUser } = useContext(UserContext);
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -49,7 +51,8 @@ export default function Register() {
                 .then(response => {
                     console.log(response.data);
                     Alert.alert("Success", "Registration successful!");
-                    // TODO: Navigate to home screen and pass user data
+                    setUser(response.data);
+                    router.push('/home');
                 })
                 .catch(error => {
                     console.log(error);
