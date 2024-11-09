@@ -4,7 +4,7 @@
     "slug": "sports-up-frontend",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/Sports_Up_Logo.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
