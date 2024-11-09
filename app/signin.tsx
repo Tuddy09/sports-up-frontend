@@ -4,8 +4,10 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image, Dime
 import { LinearGradient } from 'expo-linear-gradient';
 import Logo from '@/components/Logo';
 import Background from '@/components/Background';
+import axios from 'axios';
+import baseApi from '@/constants/BaseApi';
 
-const SignInScreen: React.FC = () => {
+export default function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -24,7 +26,20 @@ const SignInScreen: React.FC = () => {
 
   const handleSignIn = () => {
     if (validateInputs()) {
-      Alert.alert("Success", "Signed in successfully!");
+      const api = baseApi + '/Auth/Login';
+      axios.post(api, {
+        email: email,
+        password: password
+      })
+        .then(response => {
+          console.log(response.data);
+          Alert.alert("Success", "Sign in successful!");
+          //TODO: Navigate to home screen and pass user data
+        })
+        .catch(error => {
+          console.log(error);
+          Alert.alert(error.response.data)
+        });
     }
   };
 
@@ -139,5 +154,3 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
   },
 });
-
-export default SignInScreen;
