@@ -73,6 +73,7 @@ const styles = StyleSheet.create({
     paddingBottom: 32,
   },
   buttonContainer: {
+    marginTop: 16,
     marginBottom: 16,
   },
   cardWrapper: {
