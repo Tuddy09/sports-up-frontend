@@ -11,7 +11,7 @@ export default function HomeScreen() {
   const [lobbies, setLobbies] = useState<{ sport: string; skillLevel: string; latitude: number; longitude: number; date: string; time: string; availableSpots: number; totalSpots: number; location: string; }[]>([]);
 
   useEffect(() => {
-    const url = baseApi + '/lobbies';
+    const url = baseApi + '/Lobbies';
     axios.get(url).then(response => {
       setLobbies(response.data);
     });
