@@ -1,48 +1,21 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import LobbyCard from '@/components/LobbyCard';
 import Background from '@/components/Background';
+import axios from 'axios';
+import baseApi from '@/constants/BaseApi';
 
 export default function HomeScreen() {
   const [selectedSport, setSelectedSport] = useState('All');
+  const [lobbies, setLobbies] = useState<{ sport: string; skillLevel: string; latitude: number; longitude: number; date: string; time: string; availableSpots: number; totalSpots: number; location: string; }[]>([]);
 
-  const lobbies = [
-    {
-      sport: 'Soccer',
-      skillLevel: 'Intermediate',
-      latitude: 46.770920,
-      longitude: 23.589920,
-      date: '2023-10-01',
-      time: '14:00',
-      availableSpots: 3,
-      totalSpots: 10,
-      location: 'Gheorgheni Park',
-    },
-    {
-      sport: 'Basketball',
-      skillLevel: 'Beginner',
-      latitude: 46.771000,
-      longitude: 23.590000,
-      date: '2023-10-02',
-      time: '16:00',
-      availableSpots: 5,
-      totalSpots: 12,
-      location: 'La Terenuri',
-    },
-    {
-      sport: 'Tennis',
-      skillLevel: 'Advanced',
-      latitude: 46.772000,
-      longitude: 23.591000,
-      date: '2023-10-03',
-      time: '10:00',
-      availableSpots: 1,
-      totalSpots: 4,
-      location: 'Cluj Arena',
-    },
-    // Add more lobbies as needed
-  ];
+  useEffect(() => {
+    const url = baseApi + '/lobbies';
+    axios.get(url).then(response => {
+      setLobbies(response.data);
+    });
+  }, []);
 
   const sports = useMemo(() => {
     const uniqueSports = ['All', ...new Set(lobbies.map(lobby => lobby.sport))];
