@@ -19,8 +19,11 @@ export default function Index() {
       <Link href="/register">
       <Text style={{ fontSize: 18, marginVertical: 10, fontWeight: 'bold' }}>Register</Text>
       </Link>
-      <Link href="/home">
+      <Link href="/(tabs)/home">
       <Text style={{ fontSize: 18, marginVertical: 10, fontWeight: 'bold' }}>Home</Text>
+      </Link>
+      <Link href="/(tabs)/mylobbies">
+      <Text style={{ fontSize: 18, marginVertical: 10, fontWeight: 'bold' }}>My Lobbies</Text>
       </Link>
     </View>
   );

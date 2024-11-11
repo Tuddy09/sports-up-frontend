@@ -4,13 +4,13 @@ import { UserContext } from "@/hooks/contexts/userContext";
 import { useContext } from "react";
 import { View, Text, StyleSheet } from "react-native";
 
-export default function Home() {
+export default function MyLobbies() {
   const { user } = useContext(UserContext);
   return (
     <Background>
       <View style={styles.contentContainer}>
         <Logo />
-        <Text style={styles.text}>Welcome to the Home screen, {user?.username}!</Text>
+        <Text style={styles.text}>Welcome to the MyLobbies screen, {user?.username}!</Text>
       </View>
     </Background>
   );
