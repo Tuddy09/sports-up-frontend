@@ -1,12 +1,5 @@
 import React, { createContext, useState, ReactNode } from 'react';
 
-interface User {
-  id: string;
-  username: string;
-  email: string;
-  // Add other user fields as needed
-}
-
 interface UserContextProps {
   user: User | null;
   setUser: (user: User | null) => void;
