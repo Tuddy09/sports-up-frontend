@@ -7,6 +7,7 @@ import axios from 'axios';
 import baseApi from '@/constants/BaseApi';
 import { router } from 'expo-router';
 import { UserContext } from '@/hooks/contexts/userContext';
+import { Lobby } from '@/interfaces/Lobby';
 
 export default function MyLobbiesScreen() {
   const [selectedFilter, setSelectedFilter] = useState('Owned');
@@ -33,8 +34,15 @@ export default function MyLobbiesScreen() {
     return selectedFilter === 'Owned' ? ownedLobbies : joinedLobbies;
   }, [selectedFilter, ownedLobbies, joinedLobbies]);
 
-  const handlePress = (lobby: never) => {
-    console.log('Pressed lobby:', lobby);
+  const handlePress = (lobby: Lobby) => {
+    if (selectedFilter === 'Joined') {
+      router.push({
+        pathname: `/lobbyDetails/[id]`,
+        params: { id: lobby.lobbyId, showJoinButton: 'false' },
+      });
+    } else {
+      console.log('Details screen is only accessible for joined lobbies.');
+    }
   };
 
   return (

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image, StyleSheet } from 'react-native';
-const Logo = () => (
+
+const HeaderLogo = () => (
     <Image
         source={require('../assets/images/Sports_Up_Logo.png')}
         style={styles.logo}
@@ -9,11 +10,9 @@ const Logo = () => (
 
 const styles = StyleSheet.create({
     logo: {
-        width: 120,
-        height: 120,
-        borderRadius: 60,
-        marginBottom: 40,
+        width: 50,
+        height: 50,
     },
 });
 
-export default Logo;
+export default HeaderLogo;

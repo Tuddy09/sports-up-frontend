@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import MapView from '@/components/map/map';
 import Marker from '@/components/map/marker';
+import { Lobby } from '@/interfaces/Lobby';
 
 interface LobbyCardProps {
   lobby: Lobby;
