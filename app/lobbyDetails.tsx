@@ -68,7 +68,7 @@ export default function LobbyDetails() {
 
   return (
     <Background>
-
+      <View style={styles.container}>
       <View style={styles.headerContainer}>
           <View style={styles.logoContainer}>
             <HeaderLogo />
@@ -86,7 +86,7 @@ export default function LobbyDetails() {
         </View>
 
       <View style={styles.mainContainer}>
-      <ScrollView style={styles.scrollView}>
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.card}>
           {/* Title */}
           <View style={styles.header}>
@@ -139,7 +139,7 @@ export default function LobbyDetails() {
         </View>
       </ScrollView>
 
-        <View>
+      <View style={styles.buttonContainer}>
           <TouchableOpacity 
             style={styles.joinButton}
             onPress={() => {
@@ -150,7 +150,7 @@ export default function LobbyDetails() {
           </TouchableOpacity>
         </View>
       </View>
-
+    </View>
     </Background>
   );
 }
@@ -161,9 +161,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 16,
-    backgroundColor: 'white',
-    borderBottomWidth: 1,
-    borderBottomColor: '#E5E7EB',
+    // backgroundColor: 'white',
+    // borderBottomWidth: 1,
+    // borderBottomColor: '#E5E7EB',
     height: 75, 
   },
   logoContainer: {
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    padding: 16,
+    paddingTop: 32,
   },
   card: {
     backgroundColor: 'white',
@@ -248,7 +248,9 @@ const styles = StyleSheet.create({
   infoItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
+    gap: 8, // Reduced gap
+    minWidth: '45%', // Ensure items take up reasonable space
+    flexShrink: 1, // Allow shrinking if needed
   },
   infoTextContainer: {
     flex: 1,
@@ -270,11 +272,11 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
     padding: 16,
+    marginBottom: -20, // Pulls content up
   },
-  buttonContainer: {
+  scrollViewContent: {
+    flexGrow: 1,
     padding: 16,
-    paddingBottom: 24, // Add extra padding at bottom
-    backgroundColor: 'transparent',
   },
   joinButton: {
     backgroundColor: '#4F46E5', // Indigo color to match the icons
@@ -300,5 +302,10 @@ const styles = StyleSheet.create({
   joinButtonPressed: {
     backgroundColor: '#4338CA', // Slightly darker when pressed
     transform: [{ scale: 0.98 }],
+  },
+  buttonContainer: {
+    padding: 16,
+    marginTop: -20, // Moves button up
+    backgroundColor: 'transparent',
   },
 });
