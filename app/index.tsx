@@ -21,6 +21,7 @@ export default function Index() {
       </Link>
       <Link href="/lobbyDetails">
       <Text style={{ fontSize: 18, marginVertical: 10, fontWeight: 'bold' }}>Lobby Details</Text>
+      </Link>
       <Link href="/(tabs)/home">
       <Text style={{ fontSize: 18, marginVertical: 10, fontWeight: 'bold' }}>Home</Text>
       </Link>
