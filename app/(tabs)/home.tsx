@@ -22,13 +22,16 @@ export default function HomeScreen() {
   }, []);
 
   const sports = useMemo(() => {
-    const uniqueSports = ['All', ...new Set(lobbies.map(lobby => lobby.sport))];
+    const uniqueSports = [
+      "All",
+      ...new Set(lobbies.map((lobby) => lobby.sport)),
+    ];
     return uniqueSports;
   }, [lobbies]);
 
   const filteredLobbies = useMemo(() => {
-    if (selectedSport === 'All') return lobbies;
-    return lobbies.filter(lobby => lobby.sport === selectedSport);
+    if (selectedSport === "All") return lobbies;
+    return lobbies.filter((lobby) => lobby.sport === selectedSport);
   }, [lobbies, selectedSport]);
 
   const handlePress = (lobby: Lobby) => {
@@ -43,15 +46,15 @@ export default function HomeScreen() {
     <Background>
       <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.dropdownContainer}>
-            <Picker
+          <Picker
             selectedValue={selectedSport}
             onValueChange={(itemValue: string) => setSelectedSport(itemValue)}
             style={styles.dropdown}
-            >
+          >
             {sports.map((sport: string) => (
               <Picker.Item key={sport} label={sport} value={sport} />
             ))}
-            </Picker>
+          </Picker>
         </View>
         {filteredLobbies.map((lobby, index) => (
           <View key={index} style={styles.cardWrapper}>
@@ -74,7 +77,7 @@ const styles = StyleSheet.create({
   },
   dropdownContainer: {
     marginBottom: 16,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 8,
     elevation: 2,
   },

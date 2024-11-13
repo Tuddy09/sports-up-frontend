@@ -10,7 +10,7 @@ import { UserContext } from '@/hooks/contexts/userContext';
 import { Lobby } from '@/interfaces/Lobby';
 
 export default function MyLobbiesScreen() {
-  const [selectedFilter, setSelectedFilter] = useState('Owned');
+  const [selectedFilter, setSelectedFilter] = useState("Owned");
   const [ownedLobbies, setOwnedLobbies] = useState([]);
   const [joinedLobbies, setJoinedLobbies] = useState([]);
   const { user } = useContext(UserContext);
@@ -19,9 +19,13 @@ export default function MyLobbiesScreen() {
     const fetchLobbies = async () => {
       if (!user) return;
       try {
-        const ownedResponse = await axios.get(`${baseApi}/Lobbies/owned/${user.userId}`);
+        const ownedResponse = await axios.get(
+          `${baseApi}/Lobbies/owned/${user.userId}`
+        );
         setOwnedLobbies(ownedResponse.data);
-        const joinedResponse = await axios.get(`${baseApi}/Lobbies/joined/${user.userId}`);
+        const joinedResponse = await axios.get(
+          `${baseApi}/Lobbies/joined/${user.userId}`
+        );
         setJoinedLobbies(joinedResponse.data);
       } catch (error) {
         console.error(error);
@@ -31,8 +35,9 @@ export default function MyLobbiesScreen() {
   }, [user]);
 
   const filteredLobbies = useMemo(() => {
-    return selectedFilter === 'Owned' ? ownedLobbies : joinedLobbies;
+    return selectedFilter === "Owned" ? ownedLobbies : joinedLobbies;
   }, [selectedFilter, ownedLobbies, joinedLobbies]);
+
 
   const handlePress = (lobby: Lobby) => {
     if (selectedFilter === 'Joined') {
@@ -41,7 +46,10 @@ export default function MyLobbiesScreen() {
         params: { id: lobby.lobbyId, showJoinButton: 'false' },
       });
     } else {
-      console.log('Details screen is only accessible for joined lobbies.');
+      router.push({
+        pathname: `/managelobby/[id]`,
+        params: { id: lobby.lobbyId },
+      });
     }
   };
 
@@ -51,7 +59,7 @@ export default function MyLobbiesScreen() {
         <View style={styles.buttonContainer}>
           <Button
             title="Create New Lobby"
-            onPress={() => router.push('/createlobby')}
+            onPress={() => router.push("/createlobby")}
           />
         </View>
         <View style={styles.dropdownContainer}>
@@ -66,7 +74,10 @@ export default function MyLobbiesScreen() {
         </View>
         {filteredLobbies.map((lobby, index) => (
           <View key={index} style={styles.cardWrapper}>
-            <LobbyCard lobby={lobby} onPress={() => handlePress(lobby)} />
+            <LobbyCard
+              lobby={lobby}
+              onPress={() => handlePress(lobby)}
+            />
           </View>
         ))}
       </ScrollView>
@@ -89,7 +100,7 @@ const styles = StyleSheet.create({
   },
   dropdownContainer: {
     marginBottom: 16,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 8,
     elevation: 2,
   },
