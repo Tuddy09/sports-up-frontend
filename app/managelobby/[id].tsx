@@ -12,16 +12,12 @@ import { UserContext } from "@/hooks/contexts/userContext";
 import Background from "@/components/Background";
 import baseApi from "@/constants/BaseApi";
 import { Lobby } from "@/interfaces/Lobby";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { RouteProp, useRoute } from "@react-navigation/native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import LobbyCard from "@/components/LobbyCard";
 
 interface JoinRequest {
   userId: number;
-  user: {
-    username: string;
-  };
+  username: string;
   status: string;
   // Add other fields as needed
 }
@@ -31,13 +27,7 @@ interface RouteParams {
 }
 
 export default function ManageLobbyScreen() {
-  const route = useRoute<RouteProp<{ params: RouteParams }, "params">>();
-  //   const { lobbyId } = route.params;
-  const router = useRouter();
   const lobbyId = useLocalSearchParams().id;
-
-  // Guard clause: check if 'query' is populated and contains 'id'
-  // const lobbyId = query?.id;
 
   const { user } = useContext(UserContext);
   const [lobbyDetails, setLobbyDetails] = useState<Lobby | null>(null);
@@ -57,7 +47,6 @@ export default function ManageLobbyScreen() {
       const response = await axios.get(`${baseApi}/Lobbies/${lobbyId}`);
       setLobbyDetails(response.data);
     } catch (error) {
-      console.error(error);
       Alert.alert("Error", "Failed to load lobby details.");
     } finally {
       setLoading(false);
@@ -66,11 +55,10 @@ export default function ManageLobbyScreen() {
 
   const fetchRequestsToJoin = async () => {
     try {
-      const response = await axios.get(`${baseApi}/Requests/${lobbyId}`);
+      const response = await axios.get(`${baseApi}/LobbyPlayers/Requests/${lobbyId}`);
       setJoinRequests(response.data);
     } catch (error) {
-      console.error(error);
-      Alert.alert("Error", "Failed to load requests.");
+      Alert.alert("No join requests found.");
     }
   };
 
@@ -86,7 +74,6 @@ export default function ManageLobbyScreen() {
       );
       Alert.alert("Request accepted");
     } catch (error) {
-      console.error("Error accepting request:", error);
       Alert.alert("Failed to accept request");
     }
   };
@@ -127,17 +114,18 @@ export default function ManageLobbyScreen() {
           {joinRequests.length > 0 ? (
             joinRequests.map((request) => (
               <View key={request.userId} style={styles.requestCard}>
-                <Text>Username: {request.user.username}</Text>{" "}
+                <Text style={styles.usernameText}>Username: {request.username}</Text>
                 {/* Accessing username */}
                 <View style={styles.buttonRow}>
                   <Button
                     title="Accept"
                     onPress={() => handleAccept(request.userId)}
+                    color="#2ecc71" // Green color for accept button
                   />
                   <Button
                     title="Reject"
-                    color="red"
                     onPress={() => handleReject(request.userId)}
+                    color="#e74c3c" // Red color for reject button
                   />
                 </View>
               </View>
@@ -168,36 +156,36 @@ const styles = StyleSheet.create({
   // Style for the requests section
   requestsContainer: {
     padding: 18,
-    backgroundColor: "rgba(255, 255, 255, 0.95)", // Light, translucent white background
+    backgroundColor: "#f9f9f9", // Light gray background
     borderRadius: 15,
     marginVertical: 12,
     shadowColor: "#000",
-    shadowOpacity: 0.15,
-    shadowRadius: 12,
-    shadowOffset: { width: 0, height: 6 },
-    elevation: 5, // Adding shadow and elevation for a "card" effect
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 5 },
+    elevation: 4, // Slightly reduced shadow and elevation for a softer effect
   },
   sectionTitle: {
-    fontSize: 20,
-    fontWeight: "700", // Bold and large font
-    color: "#2ecc71", // Matching gradient start color for emphasis
-    marginBottom: 12,
+    fontSize: 22,
+    fontWeight: "bold", // Bold and large font
+    color: "#34495e", // Dark gray color for emphasis
+    marginBottom: 16,
   },
   requestCard: {
-    padding: 18,
-    backgroundColor: "rgba(255, 255, 255, 0.95)", // Matching translucent white background
-    borderRadius: 15,
+    padding: 16,
+    backgroundColor: "#ffffff", // White background
+    borderRadius: 12,
     marginBottom: 12,
     shadowColor: "#000",
-    shadowOpacity: 0.15,
-    shadowRadius: 12,
-    shadowOffset: { width: 0, height: 6 },
-    elevation: 5, // Card-like shadow
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 5 },
+    elevation: 4, // Slightly reduced shadow and elevation for a softer effect
   },
   buttonRow: {
     flexDirection: "row",
-    justifyContent: "space-around",
-    marginTop: 8,
+    justifyContent: "space-between", // Space between buttons
+    marginTop: 12,
   },
   // Additional styling for each request card's contents
   row: {
@@ -207,8 +195,8 @@ const styles = StyleSheet.create({
   },
   usernameText: {
     fontSize: 18,
-    fontWeight: "600", // Slightly bold font for the username
-    color: "#34495e", // Dark gray color
+    fontWeight: "bold", // Bold font for the username
+    color: "#2c3e50", // Darker gray color
     marginBottom: 4,
   },
   infoText: {

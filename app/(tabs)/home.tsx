@@ -43,6 +43,7 @@ export default function HomeScreen() {
   }, [lobbies, selectedSport]);
 
   const handlePress = (lobby: {
+    lobbyId: number;
     sport: string;
     skillLevel: string;
     latitude: number;

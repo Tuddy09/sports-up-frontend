@@ -45,7 +45,7 @@ export default function MyLobbiesScreen() {
     if (filter === "Owned") {
       console.log("lobby id: ", lobby.lobbyId);
       router.push({
-        pathname: `/managelobby/${lobby.lobbyId}`,
+        pathname: `/managelobby/[id]`,
         params: { id: lobby.lobbyId },
       });
     } else {
