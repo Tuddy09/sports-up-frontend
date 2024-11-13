@@ -27,8 +27,8 @@ export default function Register() {
             return false;
         }
 
-        if (password.length < 8) {
-            Alert.alert("Error", "Password must be at least 8 characters long.");
+        if (password.length < 3) {
+            Alert.alert("Error", "Password must be at least 3 characters long.");
             return false;
         }
 
