@@ -1,17 +1,21 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useContext } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import LobbyCard from '@/components/LobbyCard';
 import Background from '@/components/Background';
 import axios from 'axios';
 import baseApi from '@/constants/BaseApi';
+import { Lobby } from '@/interfaces/Lobby';
+import { router } from 'expo-router';
+import { UserContext } from '@/hooks/contexts/userContext';
 
 export default function HomeScreen() {
   const [selectedSport, setSelectedSport] = useState('All');
-  const [lobbies, setLobbies] = useState<{ sport: string; skillLevel: string; latitude: number; longitude: number; date: string; time: string; availableSpots: number; totalSpots: number; location: string; }[]>([]);
+  const [lobbies, setLobbies] = useState<{lobbyId:string; sport: string; skillLevel: string; latitude: number; longitude: number; date: string; time: string; availableSpots: number; totalSpots: number; location: string; createdAt: string; }[]>([]);
+  const {user} = useContext(UserContext);
 
   useEffect(() => {
-    const url = baseApi + '/Lobbies';
+    const url = baseApi + `/Lobbies/${user?.userId}/Available`;
     axios.get(url).then(response => {
       setLobbies(response.data);
     });
@@ -27,8 +31,12 @@ export default function HomeScreen() {
     return lobbies.filter(lobby => lobby.sport === selectedSport);
   }, [lobbies, selectedSport]);
 
-  const handlePress = (lobby: { sport: string; skillLevel: string; latitude: number; longitude: number; date: string; time: string; availableSpots: number; totalSpots: number; location: string; }) => {
-    console.log('Pressed lobby:', lobby);
+  const handlePress = (lobby: Lobby) => {
+    console.log(lobby);
+    router.push({
+      pathname: `/lobbyDetails/[id]`,
+      params: { id: lobby.lobbyId, showJoinButton: 'true' },
+    });
   };
 
   return (

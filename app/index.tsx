@@ -19,7 +19,7 @@ export default function Index() {
       <Link href="/register">
       <Text style={{ fontSize: 18, marginVertical: 10, fontWeight: 'bold' }}>Register</Text>
       </Link>
-      <Link href="/lobbyDetails">
+      <Link href="/lobbyDetails/1">
       <Text style={{ fontSize: 18, marginVertical: 10, fontWeight: 'bold' }}>Lobby Details</Text>
       </Link>
       <Link href="/(tabs)/home">
