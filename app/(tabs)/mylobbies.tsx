@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useMemo, useContext } from "react";
-import { View, ScrollView, StyleSheet, Button } from "react-native";
-import { Picker } from "@react-native-picker/picker";
-import LobbyCard from "@/components/LobbyCard";
-import Background from "@/components/Background";
-import axios from "axios";
-import baseApi from "@/constants/BaseApi";
-import { router } from "expo-router";
-import { UserContext } from "@/hooks/contexts/userContext";
-import { Lobby } from "@/interfaces/Lobby";
+import React, { useState, useEffect, useMemo, useContext } from 'react';
+import { View, ScrollView, StyleSheet, Button } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
+import LobbyCard from '@/components/LobbyCard';
+import Background from '@/components/Background';
+import axios from 'axios';
+import baseApi from '@/constants/BaseApi';
+import { router } from 'expo-router';
+import { UserContext } from '@/hooks/contexts/userContext';
+import { Lobby } from '@/interfaces/Lobby';
 
 export default function MyLobbiesScreen() {
   const [selectedFilter, setSelectedFilter] = useState("Owned");
@@ -38,19 +38,18 @@ export default function MyLobbiesScreen() {
     return selectedFilter === "Owned" ? ownedLobbies : joinedLobbies;
   }, [selectedFilter, ownedLobbies, joinedLobbies]);
 
-  const handlePress = (lobby: Lobby, filter: string) => {
-    console.log("Pressed lobby:", lobby);
 
-    // If the selected filter is "Owned", navigate to the ManageLobbyScreen with the lobbyId
-    if (filter === "Owned") {
-      console.log("lobby id: ", lobby.lobbyId);
+  const handlePress = (lobby: Lobby) => {
+    if (selectedFilter === 'Joined') {
+      router.push({
+        pathname: `/lobbyDetails/[id]`,
+        params: { id: lobby.lobbyId, showJoinButton: 'false' },
+      });
+    } else {
       router.push({
         pathname: `/managelobby/[id]`,
         params: { id: lobby.lobbyId },
       });
-    } else {
-      // Handle other actions for "Joined" lobbies (e.g., view details)
-      console.log("Viewing joined lobby:", lobby);
     }
   };
 
@@ -77,7 +76,7 @@ export default function MyLobbiesScreen() {
           <View key={index} style={styles.cardWrapper}>
             <LobbyCard
               lobby={lobby}
-              onPress={() => handlePress(lobby, selectedFilter)}
+              onPress={() => handlePress(lobby)}
             />
           </View>
         ))}

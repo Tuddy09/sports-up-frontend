@@ -9,4 +9,5 @@ export interface Lobby {
   availableSpots: number;
   totalSpots: number;
   location: string;
+  createdAt: string;
 }
