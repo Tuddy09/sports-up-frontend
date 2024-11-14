@@ -87,6 +87,9 @@ export default function ManageLobbyScreen() {
       setJoinRequests(
         joinRequests.filter((request) => request.userId !== userId)
       );
+      if (lobbyDetails) {
+        lobbyDetails.availableSpots += 1;
+      }
       Alert.alert("Request rejected");
     } catch (error) {
       console.error("Error rejecting request:", error);

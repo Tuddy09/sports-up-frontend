@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { LinearGradient } from 'expo-linear-gradient';
 import Background from '@/components/Background';
@@ -16,7 +16,7 @@ export default function CreateLobby() {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [time, setTime] = useState(new Date());
   const [showTimePicker, setShowTimePicker] = useState(false);
-  const [location, setLocation] = useState('GheorgheniPark');
+  const [location, setLocation] = useState('Gheorgheni Park');
   const [totalSpots, setTotalSpots] = useState('');
   const [skillLevel, setSkillLevel] = useState('Beginner');
 
@@ -57,85 +57,94 @@ export default function CreateLobby() {
   };
 
   return (
-    <Background>
-      <View style={styles.container}>
-        <Image
-          source={require('@/assets/images/banner.png')}
-          style={styles.banner}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Sport"
-          placeholderTextColor="rgba(255,255,255,0.7)"
-          onChangeText={setSport}
-          value={sport}
-        />
-        <TouchableOpacity onPress={() => setShowDatePicker(true)} style={styles.inputContainer}>
-          <Text style={styles.inputText}>Date: {date.toDateString()}</Text>
-        </TouchableOpacity>
-        {showDatePicker && (
-          <DateTimePicker
-            value={date}
-            mode="date"
-            display="default"
-            onChange={(event, selectedDate) => {
-              setShowDatePicker(false);
-              if (selectedDate) {
-                setDate(selectedDate);
-              }
-            }}
-          />
-        )}
-        <TouchableOpacity onPress={() => setShowTimePicker(true)} style={styles.inputContainer}>
-          <Text style={styles.inputText}>Time: {time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
-        </TouchableOpacity>
-        {showTimePicker && (
-          <DateTimePicker
-            value={time}
-            mode="time"
-            display="default"
-            onChange={(event, selectedTime) => {
-              setShowTimePicker(false);
-              if (selectedTime) {
-                setTime(selectedTime);
-              }
-            }}
-          />
-        )}
-        <View style={styles.pickerContainer}>
-          <Picker selectedValue={location} onValueChange={(itemValue) => setLocation(itemValue)} style={styles.picker}>
-            {locations.map((loc) => (
-              <Picker.Item key={loc} label={loc} value={loc} />
-            ))}
-          </Picker>
-        </View>
-        <TextInput
-          style={styles.input}
-          placeholder="Total Spots"
-          placeholderTextColor="rgba(255,255,255,0.7)"
-          onChangeText={setTotalSpots}
-          value={totalSpots}
-          keyboardType="numeric"
-        />
-        <View style={styles.pickerContainer}>
-          <Picker selectedValue={skillLevel} onValueChange={(itemValue: string) => setSkillLevel(itemValue)} style={styles.picker}>
-            {skillLevels.map((level: string) => (
-              <Picker.Item key={level} label={level} value={level} />
-            ))}
-          </Picker>
-        </View>
-        <TouchableOpacity style={styles.button} onPress={handleCreateLobby}>
-          <LinearGradient
-            colors={['#2ecc71', '#3498db']}
-            style={styles.buttonGradient}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-          >
-            <Text style={styles.buttonText}>Create Lobby</Text>
-          </LinearGradient>
-        </TouchableOpacity>
-      </View>
-    </Background>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{ flex: 1 }}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+          <Background>
+            <View style={styles.container}>
+              <Image
+                source={require('@/assets/images/banner.png')}
+                style={styles.banner}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Sport"
+                placeholderTextColor="rgba(255,255,255,0.7)"
+                onChangeText={setSport}
+                value={sport}
+              />
+              <TouchableOpacity onPress={() => setShowDatePicker(true)} style={styles.inputContainer}>
+                <Text style={styles.inputText}>Date: {date.toDateString()}</Text>
+              </TouchableOpacity>
+              {showDatePicker && (
+                <DateTimePicker
+                  value={date}
+                  mode="date"
+                  display="default"
+                  onChange={(event, selectedDate) => {
+                    setShowDatePicker(false);
+                    if (selectedDate) {
+                      setDate(selectedDate);
+                    }
+                  }}
+                />
+              )}
+              <TouchableOpacity onPress={() => setShowTimePicker(true)} style={styles.inputContainer}>
+                <Text style={styles.inputText}>Time: {time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
+              </TouchableOpacity>
+              {showTimePicker && (
+                <DateTimePicker
+                  value={time}
+                  mode="time"
+                  display="default"
+                  onChange={(event, selectedTime) => {
+                    setShowTimePicker(false);
+                    if (selectedTime) {
+                      setTime(selectedTime);
+                    }
+                  }}
+                />
+              )}
+              <View style={styles.pickerContainer}>
+                <Picker selectedValue={location} onValueChange={(itemValue) => setLocation(itemValue)} style={styles.picker}>
+                  {locations.map((loc) => (
+                    <Picker.Item key={loc} label={loc} value={loc} />
+                  ))}
+                </Picker>
+              </View>
+              <TextInput
+                style={styles.input}
+                placeholder="Total Spots"
+                placeholderTextColor="rgba(255,255,255,0.7)"
+                onChangeText={setTotalSpots}
+                value={totalSpots}
+                keyboardType="numeric"
+              />
+              <View style={styles.pickerContainer}>
+                <Picker selectedValue={skillLevel} onValueChange={(itemValue: string) => setSkillLevel(itemValue)} style={styles.picker}>
+                  {skillLevels.map((level: string) => (
+                    <Picker.Item key={level} label={level} value={level} />
+                  ))}
+                </Picker>
+              </View>
+              <TouchableOpacity style={styles.button} onPress={handleCreateLobby}>
+                <LinearGradient
+                  colors={['#2ecc71', '#3498db']}
+                  style={styles.buttonGradient}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                >
+                  <Text style={styles.buttonText}>Create Lobby</Text>
+                </LinearGradient>
+              </TouchableOpacity>
+            </View>
+          </Background>
+        </ScrollView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 }
 
