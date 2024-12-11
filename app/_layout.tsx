@@ -21,6 +21,14 @@ export default function RootLayout() {
           name="lobby/id/messages" //TODO: change 'id' to '[id]'
           options={{ headerTitle: "Messages" }}
         />
+        <Stack.Screen
+          name="lobby/[id]/rating"
+          options={{ headerTitle: "Rate lobby players" }}
+        />
+        <Stack.Screen
+          name="lobby/[id]/rating/[userToRateId]"
+          options={{ headerTitle: "" }}
+        />
       </Stack>
     </UserProvider>
   );
