@@ -6,6 +6,7 @@ import {
   StyleSheet,
   ScrollView,
   Alert,
+  TouchableOpacity,
 } from "react-native";
 import axios from "axios";
 import { UserContext } from "@/hooks/contexts/userContext";
@@ -33,6 +34,7 @@ export default function ManageLobbyScreen() {
   const [lobbyDetails, setLobbyDetails] = useState<Lobby | null>(null);
   const [joinRequests, setJoinRequests] = useState<JoinRequest[]>([]);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     if (lobbyId) {
@@ -137,6 +139,13 @@ export default function ManageLobbyScreen() {
             <Text>No pending join requests</Text>
           )}
         </View>
+
+        <TouchableOpacity
+          style={styles.chatButton}
+          onPress={() => router.push(`/lobby/${lobbyId}/messages`)} //change to [lobbyId] when implemented
+        >
+          <Text style={styles.chatButtonText}>Go to Chat</Text>
+        </TouchableOpacity>
       </ScrollView>
     </Background>
   );
@@ -205,5 +214,26 @@ const styles = StyleSheet.create({
   infoText: {
     fontSize: 16,
     color: "#7f8c8d", // Lighter gray for informational text
+  },
+  chatButton: {
+    backgroundColor: "#3498db",
+    paddingVertical: 16,
+    paddingHorizontal: 32,
+    borderRadius: 12,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    marginTop: 20,
+    alignItems: "center",
+  },
+  chatButtonText: {
+    color: "#FFFFFF",
+    fontSize: 18,
+    fontWeight: "600",
   },
 });

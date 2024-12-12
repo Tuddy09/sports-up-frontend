@@ -18,7 +18,7 @@ export default function RootLayout() {
           options={{ headerTitle: "Manage lobby" }}
         />
         <Stack.Screen
-          name="lobby/id/messages" //TODO: change 'id' to '[id]'
+          name="lobby/[id]/messages" //TODO: change 'id' to '[id]'
           options={{ headerTitle: "Messages" }}
         />
         <Stack.Screen

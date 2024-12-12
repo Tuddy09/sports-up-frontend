@@ -235,9 +235,7 @@ export default function MessagesAPI() {
 const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
-    // justifyContent: "center",
-    // alignItems: "center",
-    paddingHorizontal: 30,
+    paddingHorizontal: 0, // Adjusted padding to remove white columns
     width: "100%",
   },
   gradientBackground: {
@@ -249,12 +247,10 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0,
     shadowColor: "#000",
     shadowOpacity: 0.1,
-    // borderBottomColor: "#000",
     backgroundColor: "rgba(255, 255, 255, 0.2)",
     borderRadius: 10,
     marginBottom: 5,
   },
-
   sender: {
     fontWeight: "bold",
     color: "#000",
