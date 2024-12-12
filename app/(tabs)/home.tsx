@@ -1,22 +1,36 @@
-import React, { useState, useMemo, useEffect, useContext } from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
-import LobbyCard from '@/components/LobbyCard';
-import Background from '@/components/Background';
-import axios from 'axios';
-import baseApi from '@/constants/BaseApi';
-import { Lobby } from '@/interfaces/Lobby';
-import { router } from 'expo-router';
-import { UserContext } from '@/hooks/contexts/userContext';
+import React, { useState, useMemo, useEffect, useContext } from "react";
+import { View, ScrollView, StyleSheet } from "react-native";
+import { Picker } from "@react-native-picker/picker";
+import LobbyCard from "@/components/LobbyCard";
+import Background from "@/components/Background";
+import axios from "axios";
+import baseApi from "@/constants/BaseApi";
+import { Lobby } from "@/interfaces/Lobby";
+import { router } from "expo-router";
+import { UserContext } from "@/hooks/contexts/userContext";
 
 export default function HomeScreen() {
-  const [selectedSport, setSelectedSport] = useState('All');
-  const [lobbies, setLobbies] = useState<{lobbyId:string; sport: string; skillLevel: string; latitude: number; longitude: number; date: string; time: string; availableSpots: number; totalSpots: number; location: string; createdAt: string; }[]>([]);
-  const {user} = useContext(UserContext);
+  const [selectedSport, setSelectedSport] = useState("All");
+  const [lobbies, setLobbies] = useState<
+    {
+      lobbyId: string;
+      sport: string;
+      skillLevel: string;
+      latitude: number;
+      longitude: number;
+      date: string;
+      time: string;
+      availableSpots: number;
+      totalSpots: number;
+      location: string;
+      createdAt: string;
+    }[]
+  >([]);
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     const url = baseApi + `/Lobbies/${user?.userId}/Available`;
-    axios.get(url).then(response => {
+    axios.get(url).then((response) => {
       setLobbies(response.data);
     });
   }, []);
@@ -38,8 +52,12 @@ export default function HomeScreen() {
     console.log(lobby);
     router.push({
       pathname: `/lobbyDetails/[id]`,
-      params: { id: lobby.lobbyId, showJoinButton: 'true' },
+      params: { id: lobby.lobbyId, showJoinButton: "true" },
     });
+  };
+
+  const handleProfilePress = () => {
+    router.push("/userProfile"); // Navigate to the profile page
   };
 
   return (
