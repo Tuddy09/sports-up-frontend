@@ -1,7 +1,7 @@
 type UserProfile = {
-  avatar: number;
   username: string;
   age: number;
+  avatar: number;
   totalMatchesPlayed: number;
   preferredSport: string;
   overallRating: number;

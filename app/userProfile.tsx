@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -9,55 +9,33 @@ import {
 } from "react-native";
 import axios from "axios";
 import baseApi from "@/constants/BaseApi";
+import { UserContext } from "@/hooks/contexts/userContext";
 
 export default function UserProfile() {
-  const [profileData, setProfileData] = useState<UserProfile | null>(null);
-
-  const mockProfiles = [
-    {
-      avatar: 1,
-      username: "JohnDoe",
-      age: 25,
-      totalMatchesPlayed: 120,
-      preferredSport: "Football",
-      overallRating: 4,
-    },
-    {
-      avatar: 3,
-      username: "JaneSmith",
-      age: 30,
-      totalMatchesPlayed: 95,
-      preferredSport: "Tennis",
-      overallRating: 2,
-    },
-    {
-      avatar: 5,
-      username: "MikeJohnson",
-      age: 22,
-      totalMatchesPlayed: 60,
-      preferredSport: "Basketball",
-      overallRating: 1,
-    },
-  ];
+  const [profileData, setProfileData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
-    setProfileData(mockProfiles[0]);
+    // Fetch data from backend
+    const fetchProfile = async () => {
+      try {
+        const response = await axios.get(
+          `${baseApi}/Users/Profile/${user?.userId}`
+        );
+        setProfileData(response.data);
+      } catch (error) {
+        Alert.alert("Error", "Failed to fetch profile data");
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfile();
   }, []);
 
-  //   useEffect(() => {
-  //     const fetchProfile = async () => {
-  //       try {
-  //         const response = await axios.get(`${baseApi}/User/Profile`);
-  //         setProfileData(response.data);
-  //       } catch (error) {
-  //         Alert.alert("Error", "Failed to fetch profile data");
-  //         console.log(error);
-  //       }
-  //     };
-
-  //     fetchProfile();
-  //   }, []);
-
+  // Calculate skill level based on overall rating
   const getSkillLevel = (rating: number) => {
     if (!rating) return "Unknown";
     if (rating >= 1 && rating <= 2) return "Beginner";
@@ -65,6 +43,12 @@ export default function UserProfile() {
     if (rating > 4 && rating <= 5) return "Advanced";
     return "Unknown";
   };
+
+  if (loading) {
+    return (
+      <ActivityIndicator size="large" color="#3498db" style={styles.loader} />
+    );
+  }
 
   if (!profileData) {
     return (
@@ -75,21 +59,26 @@ export default function UserProfile() {
   }
 
   const {
-    avatar,
     username,
     age,
+    avatar,
     totalMatchesPlayed,
     preferredSport,
     overallRating,
   } = profileData;
   const skillLevel = getSkillLevel(overallRating);
 
+  const avatarImages = {
+    1: require("@/assets/images/1.PNG"),
+    2: require("@/assets/images/2.PNG"),
+    3: require("@/assets/images/3.PNG"),
+    4: require("@/assets/images/4.PNG"),
+    5: require("@/assets/images/5.PNG"),
+  };
+
   return (
     <View style={styles.container}>
-      <Image
-        source={require(`@/assets/images/${avatar}.PNG`)}
-        style={styles.avatar}
-      />
+      <Image source={avatarImages[avatar]} style={styles.avatar} />
       <Text style={styles.username}>{username}</Text>
       <Text style={styles.detail}>Age: {age}</Text>
       <Text style={styles.detail}>
