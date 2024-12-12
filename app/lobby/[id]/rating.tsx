@@ -74,11 +74,9 @@ export default function RatingScreen() {
 
   const fetchLobbyPlayers = async () => {
     try {
-      // const response = await axios.get(`${baseApi}/lobby/${lobbyId}/players`);
-      const response = await axios.get(`${baseApi}/LobbyPlayers/`);
-      const playersInLobby = [];
-      playersInLobby.push(hardcodedUser);
-      setLobbyPlayers(playersInLobby);
+      const response = await axios.get(`${baseApi}/Users/lobbyusers/${lobbyId}`)
+      const playersInLobby = response.data;
+      setLobbyPlayers(playersInLobby.filter((player : User) => player.userId !== user?.userId));
       console.log("lobby players: ", playersInLobby);
     } catch (error) {
       Alert.alert("Error", "Failed to load players.");

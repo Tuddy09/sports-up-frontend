@@ -41,7 +41,7 @@ export default function SignIn() {
         })
         .catch(error => {
           console.log(error);
-          Alert.alert(error.response.data)
+          Alert.alert("Error", error.response)
         });
     }
   };

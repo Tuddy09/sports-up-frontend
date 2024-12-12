@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { View, Text, TextInput, Button, StyleSheet, Alert } from "react-native";
 import { useRouter, useLocalSearchParams, Href } from "expo-router";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { UserContext } from "@/hooks/contexts/userContext";
 import baseApi from "@/constants/BaseApi";
 import { PlayerRating } from "@/interfaces/PlayerRating";
@@ -53,13 +53,13 @@ export default function UserRatingScreen() {
         rating,
         comment,
       };
-
+      console.log(playerRating);
       // Call the API to submit the rating
-      await axios.post(`${baseApi}/PlayerRating`, playerRating); // TODO: change this api accordingly
-
+      await axios.post(`${baseApi}/PlayerRatings`, playerRating);
       Alert.alert("Success", "Your rating has been submitted.");
       router.push(`/lobby/${lobbyId}/rating` as Href<string>);
-    } catch (error) {
+    } catch (error : any) {
+      console.log(error.response)
       Alert.alert("Error", "Failed to submit rating.");
     } finally {
       setLoading(false);

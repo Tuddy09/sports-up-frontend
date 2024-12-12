@@ -60,7 +60,9 @@ export default function Register() {
   };
 
   const handleRegister = () => {
+
     if (validateInputs()) {
+      console.log("sal");
       const api = baseApi + "/Auth/Register";
       axios
         .post(api, {
@@ -77,9 +79,11 @@ export default function Register() {
         })
         .catch((error) => {
           console.log(error);
-          Alert.alert("Error", error.response.data);
+          Alert.alert("Error", error.response);
         });
+    console.log("sal");
     }
+
   };
 
   return (
