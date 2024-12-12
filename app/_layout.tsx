@@ -29,7 +29,12 @@ export default function RootLayout() {
           name="lobby/[id]/rating/[userToRateId]"
           options={{ headerTitle: "" }}
         />
+        <Stack.Screen
+            name="userProfile"
+            options={{ headerTitle: "Back to lobbies" }}
+        />
       </Stack>
+
     </UserProvider>
   );
 }
