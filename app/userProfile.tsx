@@ -14,37 +14,40 @@ import Background from "@/components/Background";
 
 
 export default function UserProfile() {
-    const [profileData, setProfileData] = useState(null);
+    interface ProfileData {
+        username: string;
+        age: number;
+        avatarId: number;
+        totalMatchesPlayed: number;
+        preferredSport: string;
+        rating: number;
+    }
+    const [profileData, setProfileData] = useState<ProfileData | null>(null);
     const [loading, setLoading] = useState(true);
     const {user} = useContext(UserContext);
+    const [skillLevel,setSkillLevel] = useState("Unknown");
 
     useEffect(() => {
-        // Fetch data from backend
-        const fetchProfile = async () => {
-            try {
-                const response = await axios.get(
-                    `${baseApi}/Users/Profile/${user?.userId}`
-                );
+        axios.get(`${baseApi}/Users/Profile/${user?.userId}`)
+            .then(response => {
                 setProfileData(response.data);
-            } catch (error) {
+                const getSkillLevel = (rating: number | undefined) => {
+                    if (!rating) return "Unknown";
+                    if (rating >= 1 && rating <= 2) return "Beginner";
+                    if (rating > 2 && rating <= 4) return "Intermediate";
+                    if (rating > 4 && rating <= 5) return "Advanced";
+                    return "Unknown";
+                };
+                setSkillLevel(getSkillLevel(profileData?.rating));
+                setLoading(false);
+            })
+            .catch(error => {
                 Alert.alert("Error", "Failed to fetch profile data");
                 console.log(error);
-            } finally {
                 setLoading(false);
-            }
-        };
-
-        fetchProfile();
+            });
     }, []);
 
-    // Calculate skill level based on overall rating
-    const getSkillLevel = (rating: number) => {
-        if (!rating) return "Unknown";
-        if (rating >= 1 && rating <= 2) return "Beginner";
-        if (rating > 2 && rating <= 4) return "Intermediate";
-        if (rating > 4 && rating <= 5) return "Advanced";
-        return "Unknown";
-    };
 
     if (loading) {
         return (
@@ -60,17 +63,8 @@ export default function UserProfile() {
         );
     }
 
-    const {
-        username,
-        age,
-        avatarId,
-        totalMatchesPlayed,
-        preferredSport,
-        overallRating,
-    } = profileData;
-    const skillLevel = getSkillLevel(overallRating);
 
-    const avatarImages = {
+    const avatarImages: { [key: number]: any } = {
         1: require('../assets/images/1.png'),
         2: require('../assets/images/2.png'),
         3: require('../assets/images/3.png'),
@@ -81,15 +75,17 @@ export default function UserProfile() {
     return (
         <Background>
             <View style={styles.container}>
-                <Image source={avatarImages[avatarId]} style={styles.avatar}/>
-                <Text style={styles.username}>{username}</Text>
-                <Text style={styles.detail}>Age: {age}</Text>
+                <Image
+                    source={avatarImages[profileData.avatarId]}
+                    style={styles.avatar}></Image>
+                <Text style={styles.username}>{profileData.username}</Text>
+                <Text style={styles.detail}>Age: {profileData.age}</Text>
                 <Text style={styles.detail}>
-                    Total Matches Played: {totalMatchesPlayed}
+                    Total Matches Played: {profileData.totalMatchesPlayed}
                 </Text>
-                <Text style={styles.detail}>Preferred Sport: {preferredSport}</Text>
+                <Text style={styles.detail}>Preferred Sport: {profileData.preferredSport}</Text>
                 <Text style={styles.detail}>
-                    Overall Rating: {overallRating || "Not Rated"}
+                    Overall Rating: {profileData.rating || "Not Rated"}
                 </Text>
                 <Text style={styles.skillLevel}>Skill Level: {skillLevel}</Text>
             </View>
