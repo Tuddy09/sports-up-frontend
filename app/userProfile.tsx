@@ -69,11 +69,11 @@ export default function UserProfile() {
   const skillLevel = getSkillLevel(overallRating);
 
   const avatarImages = {
-    1: require("@/assets/images/1.PNG"),
-    2: require("@/assets/images/2.PNG"),
-    3: require("@/assets/images/3.PNG"),
-    4: require("@/assets/images/4.PNG"),
-    5: require("@/assets/images/5.PNG"),
+    1: require('../assets/images/1.png'),
+    2: require('../assets/images/2.png'),
+    3: require('../assets/images/3.png'),
+    4: require('../assets/images/4.png'),
+    5: require('../assets/images/5.png'),
   };
 
   return (
