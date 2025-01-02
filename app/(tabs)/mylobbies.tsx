@@ -13,6 +13,7 @@ export default function MyLobbiesScreen() {
   const [selectedFilter, setSelectedFilter] = useState("Owned");
   const [ownedLobbies, setOwnedLobbies] = useState([]);
   const [joinedLobbies, setJoinedLobbies] = useState([]);
+  const [finishedLobbies, setFinishedLobbies] = useState([]);
   const { user } = useContext(UserContext);
 
   useEffect(() => {
@@ -27,6 +28,10 @@ export default function MyLobbiesScreen() {
           `${baseApi}/Lobbies/joined/${user.userId}`
         );
         setJoinedLobbies(joinedResponse.data);
+        const finishedResponse = await axios.get(
+          `${baseApi}/Lobbies/Finished/${user.userId}`
+        )
+        setFinishedLobbies(finishedResponse.data);
       } catch (error) {
         console.error(error);
       }
@@ -35,8 +40,8 @@ export default function MyLobbiesScreen() {
   }, [user]);
 
   const filteredLobbies = useMemo(() => {
-    return selectedFilter === "Owned" ? ownedLobbies : joinedLobbies;
-  }, [selectedFilter, ownedLobbies, joinedLobbies]);
+    return selectedFilter === "Owned" ? ownedLobbies : selectedFilter === "Joined" ? joinedLobbies : finishedLobbies;
+  }, [selectedFilter, ownedLobbies, joinedLobbies, finishedLobbies]);
 
 
   const handlePress = (lobby: Lobby) => {
@@ -45,7 +50,14 @@ export default function MyLobbiesScreen() {
         pathname: `/lobbyDetails/[id]`,
         params: { id: lobby.lobbyId, showJoinButton: 'false' },
       });
-    } else {
+    } 
+    else if (selectedFilter === 'Finished') {
+      router.push({
+        pathname: `/lobby/[id]/rating`,
+        params: {id: lobby.lobbyId}
+      })
+    }
+    else {
       router.push({
         pathname: `/managelobby/[id]`,
         params: { id: lobby.lobbyId },
@@ -70,6 +82,7 @@ export default function MyLobbiesScreen() {
           >
             <Picker.Item label="Owned Lobbies" value="Owned" />
             <Picker.Item label="Joined Lobbies" value="Joined" />
+            <Picker.Item label="Finished Lobbies" value="Finished" />
           </Picker>
         </View>
         {filteredLobbies.map((lobby, index) => (

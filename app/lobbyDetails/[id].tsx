@@ -16,8 +16,6 @@ interface InfoItemProps {
     value: string;
 }
 
-
-
 export default function LobbyDetails() {
     const [lobby, setLobby] = useState<Lobby>();
     const [owner, setOwner] = useState<User>();
@@ -151,13 +149,22 @@ export default function LobbyDetails() {
                         </View>
                     </ScrollView>
 
-                    {showJoinButton && (
+                    {showJoinButton ? (
                         <View style={styles.buttonContainer}>
                             <TouchableOpacity
                                 style={styles.joinButton}
                                 onPress={requestToJoin}
                             >
                                 <Text style={styles.joinButtonText}>Request to Join</Text>
+                            </TouchableOpacity>
+                        </View>
+                    ) : (
+                        <View style={styles.buttonContainer}>
+                            <TouchableOpacity
+                                style={styles.chatButton}
+                                onPress={() => router.push(`/lobby/${lobbyId}/messages`)}
+                            >
+                                <Text style={styles.chatButtonText}>Go to Chat</Text>
                             </TouchableOpacity>
                         </View>
                     )}
@@ -173,9 +180,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingHorizontal: 16,
-        // backgroundColor: 'white',
-        // borderBottomWidth: 1,
-        // borderBottomColor: '#E5E7EB',
         height: 75,
     },
     logoContainer: {
@@ -319,5 +323,25 @@ const styles = StyleSheet.create({
         padding: 16,
         marginTop: -20, // Moves button up
         backgroundColor: 'transparent',
+    },
+    chatButton: {
+        backgroundColor: '#3498db',
+        paddingVertical: 16,
+        paddingHorizontal: 32,
+        borderRadius: 12,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+        alignItems: "center",
+    },
+    chatButtonText: {
+        color: '#FFFFFF',
+        fontSize: 18,
+        fontWeight: '600',
     },
 });
